@@ -1,26 +1,36 @@
-machine:
-  python:
-    version: 3.5.2
-  timezone: Asia/Tokyo
-
-database:
-  override:
-#    設定ファイルを上書き
-    - mv sample/settings.ci.py sample/settings.py
-#    urls.py差し替え
-    - mv sample/urls.py sample/urls.py.org
-    - mv sample/urls.ci.py sample/urls.py
-
-#    マイグレーションファイル作成
-    - python ./manage.py makemigrations accounts
-#    マイグレーションファイルをDBへ反映する
-    - python ./manage.py migrate
-
-#    差し替えていたurls.pyを元に戻す
-    - mv sample/urls.py.org sample/urls.py
-test:
-  override:
-    - coverage run --source=accounts manage.py test accounts
-    - coverage html
-  post:
-    - mv cover $CIRCLE_ARTIFACTS
+version: 2
+jobs:
+  build:
+    machine:
+      image: circleci/classic:edge
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run:
+          name: Install Docker Compose
+          command: |
+            curl -L https://github.com/docker/compose/releases/download/1.19.0/docker-compose-`uname -s`-`uname -m` > ~/docker-compose
+            chmod +x ~/docker-compose
+            sudo mv ~/docker-compose /usr/local/bin/docker-compose
+      - run:
+          name: docker-compose up
+          command: |
+            set -x
+            docker-compose up --build -d
+      - run:
+          name: docker-compose stop
+          command: |
+            set -x
+            docker-compose stop
+      - run:
+          name: docker-compose up
+          command: |
+            set -x
+            docker-compose up -d
+      - run:
+          name: test
+          command: |
+            echo "circle ci"
+      - run:
+          name: docker-compose down
+          command: docker-compose down
