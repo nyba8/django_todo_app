@@ -1,0 +1,1 @@
+2020/09/27 20:47:39 [error] 7#7: *2 directory index of "/static/" is forbidden, client: 172.19.0.1, server: 127.0.0.1, request: "GET /web/ HTTP/1.1", host: "localhost:8000"

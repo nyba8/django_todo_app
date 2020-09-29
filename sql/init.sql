@@ -1,0 +1,3 @@
+GRANT ALL PRIVILEGES ON test_pf TO 'pf'@'%';
+
+FLUSH PRIVILEGES;
