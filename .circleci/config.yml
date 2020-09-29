@@ -4,7 +4,7 @@ jobs:
     # build ジョブ: CircleCI 上で Docker コンテナを作成してテストする
     build:
         docker:
-            - image: circle/python:3.8.2
+            - image: alpine
         steps:
             - checkout
             - run:
@@ -13,7 +13,7 @@ jobs:
     # deploy ジョブ: EC2 に SSH 接続して、デプロイを実行する
     deploy:
         machine:
-            image: circleci/python:3.8.2
+            image: circleci/classic:edge
         steps:
             - checkout
             # CircleCI に登録した秘密鍵を呼び出す
