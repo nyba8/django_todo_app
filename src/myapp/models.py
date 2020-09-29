@@ -3,7 +3,7 @@ from django.db import models
 class Posting(models.Model):
     message = models.CharField(
         max_length = 140,
-        verbose_name = 'todo app',
+        verbose_name = 'todo application',
     )
  
     created_at = models.DateTimeField(
